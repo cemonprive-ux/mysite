@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Karla:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    html { background: linear-gradient(135deg, #ff914d 0%, #0081cc 55%, #007a3f 100%); }
+    body { margin: 0; min-height: 100vh; background: linear-gradient(135deg, #ff914d 0%, #0081cc 55%, #007a3f 100%); background-attachment: fixed; }
+    a { color: #0081cc; }
+    a:hover { color: #007a3f; }
+  </style>
+</helmet>
+
+<div style="font-family: 'Karla', sans-serif; color: oklch(0.22 0.01 150); max-width: 720px; margin: 0 auto; padding: 56px 32px 96px;">
+
+  <header style="text-align: center; margin-bottom: 48px;">
+    <img src="./logo-lsa.png" alt="Logo Lycée Sidoine Apollinaire" style="width: 84px; height: 84px; border-radius: 18px; margin-bottom: 20px;" />
+    <div style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: white; margin-bottom: 14px;">Élection du CVL (conseil de la vie lycéenne) 2026 — Lycée Sidoine Apollinaire</div>
+    <h1 style="font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 40px; line-height: 1.15; margin: 0 0 16px; color: white;">Les candidats et leurs programmes</h1>
+    <p style="font-size: 17px; line-height: 1.6; color: white; opacity: 0.92; max-width: 560px; margin: 0 auto;">Cinq élèves se présentent cette année. Découvrez qui ils sont et ce qu'ils proposent avant de voter.</p>
+  </header>
+
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <sc-for list="{{ candidates }}" as="c" hint-placeholder-count="5">
+      <div style="background: white; border: 1px solid oklch(0.9 0.01 150); border-radius: 4px; padding: 28px 32px; display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <div>
+            <h2 style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 22px; margin: 0 0 4px;">{{ c.name }}</h2>
+            <div style="font-size: 14px; color: oklch(0.5 0.13 150); font-weight: 600;">{{ c.classe }}</div>
+          </div>
+        </div>
+        <div style="font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 15px; font-style: italic; color: oklch(0.3 0.01 150);">« {{ c.slogan }} »</div>
+        <p style="font-size: 15px; line-height: 1.65; color: oklch(0.35 0.01 150); margin: 4px 0 0;">
+          <sc-if value="{{ c.expanded }}" hint-placeholder-val="{{ false }}">{{ c.full }}</sc-if>
+          <sc-if value="{{ c.collapsed }}" hint-placeholder-val="{{ true }}">{{ c.excerpt }}</sc-if>
+        </p>
+        <button onClick="{{ c.toggle }}" style="align-self: flex-start; margin-top: 4px; background: none; border: none; padding: 0; font-family: 'Karla', sans-serif; font-weight: 600; font-size: 14px; color: oklch(0.42 0.13 150); cursor: pointer;" style-hover="text-decoration: underline;">
+          {{ c.buttonLabel }}
+        </button>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+
+class Component extends DCLogic {
+  state = { expanded: {} };
+
+  data = [
+    {
+      id: "1",
+      name: "Léa Fontaine",
+      classe: "Terminale G2",
+      slogan: "Une cantine meilleure, un lycée plus vivant.",
+      excerpt: "Je propose d'améliorer la qualité des repas à la cantine, de créer un vrai espace de détente au foyer et de faciliter l'accès aux clubs pour tous les niveaux."
+    },
+    {
+      id: "2",
+      name: "Thomas Berger",
+      classe: "Première S1",
+      slogan: "Le sport pour tous, tous les jours.",
+      excerpt: "Mon objectif est de développer les créneaux sportifs libres entre midi et deux, d'obtenir un nouveau terrain multisport et de relancer les tournois inter-classes."
+    },
+    {
+      id: "3",
+      name: "Nour El Amrani",
+      classe: "Terminale L",
+      slogan: "Un lycée qui écoute ses élèves.",
+      excerpt: "Je veux mettre en place une boîte à idées suivie de vraies réunions avec l'administration, et organiser des permanences du CVL ouvertes à tous."
+    },
+    {
+      id: "4",
+      name: "Hugo Lefranc",
+      classe: "Première ES2",
+      slogan: "Plus de clubs, plus de choix.",
+      excerpt: "Je souhaite créer trois nouveaux clubs (jeux de société, cinéma, débat) et obtenir une salle dédiée aux associations d'élèves, disponible toute la semaine."
+    },
+    {
+      id: "5",
+      name: "Camille Dubreuil",
+      classe: "Seconde 4",
+      slogan: "Un lycée plus vert, un lycée plus propre.",
+      excerpt: "Mon programme porte sur le tri des déchets dans toutes les salles, un jardin partagé dans la cour et une journée sans plastique une fois par mois."
+    }
+  ];
+
+  fulls = {
+    "1": "Je propose d'améliorer la qualité des repas à la cantine, de créer un vrai espace de détente au foyer et de faciliter l'accès aux clubs pour tous les niveaux. Concrètement, je demanderai une réunion trimestrielle avec le service de restauration pour faire remonter les remarques des élèves et proposer un menu végétarien systématique. Au foyer, je veux installer des canapés, une bibliothèque d'échange de livres et un coin jeux de société ouvert pendant les récréations et les heures de permanence. Enfin, je veux que l'inscription aux clubs se fasse en ligne, dès la rentrée, avec un créneau réservé aux secondes pour qu'ils découvrent tout ce qui existe.",
+    "2": "Mon objectif est de développer les créneaux sportifs libres entre midi et deux, d'obtenir un nouveau terrain multisport et de relancer les tournois inter-classes. Je veux négocier avec la vie scolaire l'ouverture du gymnase pendant la pause déjeuner, au moins trois jours par semaine, avec du matériel prêté par l'AS. Je veux aussi monter un dossier auprès de la mairie pour la rénovation du terrain extérieur, aujourd'hui impraticable. Enfin, je relancerai le tournoi de foot et de basket inter-classes qui n'a plus eu lieu depuis deux ans, avec une remise de prix en fin d'année.",
+    "3": "Je veux mettre en place une boîte à idées suivie de vraies réunions avec l'administration, et organiser des permanences du CVL ouvertes à tous. Trop de suggestions des élèves restent sans réponse : je veux qu'une boîte à idées, physique et en ligne, soit relevée chaque mois et que les propositions retenues soient présentées au conseil d'administration. Je veux aussi que le CBL tienne une permanence hebdomadaire, à un horaire fixe, où n'importe quel élève peut venir parler d'un problème ou d'une idée sans passer par sa classe.",
+    "4": "Je souhaite créer trois nouveaux clubs (jeux de société, cinéma, débat) et obtenir une salle dédiée aux associations d'élèves, disponible toute la semaine. Beaucoup d'élèves n'ont pas d'endroit pour se retrouver autour d'une passion commune. Je veux lancer un club jeux de société le mardi midi, un ciné-club avec projection mensuelle, et un club débat pour préparer les élèves aux oraux et concours. Pour que ces clubs vivent, je demanderai qu'une salle leur soit réservée en permanence, avec un planning affiché à l'entrée.",
+    "5": "Mon programme porte sur le tri des déchets dans toutes les salles, un jardin partagé dans la cour et une journée sans plastique une fois par mois. Je veux installer des poubelles de tri dans chaque salle de classe, pas seulement à la cantine, avec une campagne de sensibilisation en début d'année. Je veux aussi transformer un coin de la cour en jardin partagé, entretenu par les élèves volontaires, avec des plantations adaptées aux saisons. Enfin, une fois par mois, je veux une journée sans emballage plastique à la cantine, remplacé par des contenants réutilisables."
+  };
+
+  toggle(id) {
+    this.setState(s => ({ expanded: { ...s.expanded, [id]: !s.expanded[id] } }));
+  }
+
+  renderVals() {
+    const candidates = this.data.map(c => {
+      const isExpanded = !!this.state.expanded[c.id];
+      return {
+        ...c,
+        full: this.fulls[c.id],
+        expanded: isExpanded,
+        collapsed: !isExpanded,
+        buttonLabel: isExpanded ? "Réduire" : "Lire la suite",
+        toggle: () => this.toggle(c.id)
+      };
+    });
+    return { candidates };
+  }
+}
+
+</script>
+</body>
+</html>
